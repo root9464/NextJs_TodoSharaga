@@ -1,4 +1,21 @@
+'use client';
+
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+
 export const Header = () => {
+  const { data, isSuccess, isLoading, isError, error } = useQuery({
+    queryKey: ['user'],
+    queryFn: async () => {
+      const { data, status, statusText } = await axios.get<{ message: string }>('/api');
+      return data;
+    },
+
+    select: (data) => data.message,
+  });
+
+  console.log(data);
+
   return (
     <div className='w-full h-fit flex flex-row justify-between items-center'>
       <div className='w-[230px] h-fit flex flex-col'>
