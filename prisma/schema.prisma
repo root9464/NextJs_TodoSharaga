@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id        Int     @id @unique
+  id        BigInt  @id @unique
   name      String  @unique
   fisrtName String?
   lastName  String?
@@ -22,12 +22,19 @@ model User {
   tasks     Task[]
 }
 
+enum Priority {
+  low
+  medium
+  high
+}
+
 model Task {
   id          String   @id @default(cuid())
   title       String
   description String
   done        Boolean  @default(false)
+  priority    Priority
   createdAt   DateTime @default(now())
-  userId      Int
+  userId      BigInt
   user        User     @relation(fields: [userId], references: [id])
 }

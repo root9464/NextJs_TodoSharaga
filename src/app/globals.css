@@ -2,11 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
-
   html,
   body {
     @apply bg-[#0C0C0C] w-full min-h-screen no-underline text-white;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
   }
 }

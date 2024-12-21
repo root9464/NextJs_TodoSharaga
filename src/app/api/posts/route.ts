@@ -5,7 +5,12 @@ type Request = {
   userId: number;
   title: string;
   description: string;
+  proiority: 'low' | 'medium' | 'high';
   done: boolean;
+};
+
+(BigInt.prototype as any).toJSON = function () {
+  return this.toString();
 };
 
 export async function POST(req: NextRequest) {
@@ -26,6 +31,7 @@ export async function POST(req: NextRequest) {
         userId: body.userId,
         title: body.title,
         description: body.description,
+        priority: body.proiority,
         done: body.done,
       },
     });
@@ -61,15 +67,38 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const user_id = Number(searchParams.get('user_id'));
 
-  if (!user_id) return NextResponse.json({ message: 'User id is required' }, { status: 400 });
+  if (!user_id) {
+    return NextResponse.json({ message: 'User id is required' }, { status: 400 });
+  }
 
-  const posts = await prisma.task.findMany({
+  const tasks = await prisma.task.findMany({
     where: {
       userId: user_id,
+      done: false, // Добавляем условие для исключения завершенных заданий
     },
   });
 
-  if (!posts) return NextResponse.json({ message: 'Posts not found' }, { status: 404 });
+  const now = new Date();
+  const currentDate = now.getTime();
+  const oneDayInMs = 24 * 60 * 60 * 1000; // Один день в миллисекундах
 
-  return NextResponse.json({ status: 'success', message: 'Get posts', data: posts }, { status: 200 });
+  const sortedTasks = {
+    relevant: tasks.filter((task) => {
+      const taskDate = new Date(task.createdAt).getTime();
+      return Math.abs(currentDate - taskDate) <= oneDayInMs;
+    }),
+    irrelevant: tasks.filter((task) => {
+      const taskDate = new Date(task.createdAt).getTime();
+      return Math.abs(currentDate - taskDate) > oneDayInMs;
+    }),
+  };
+
+  return NextResponse.json(
+    {
+      status: 'success',
+      message: 'Get tasks',
+      tasks: sortedTasks,
+    },
+    { status: 200 },
+  );
 }

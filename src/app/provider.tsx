@@ -2,11 +2,15 @@
 
 import { NextUIProvider } from '@nextui-org/system';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { init } from '@telegram-apps/sdk-react';
+import eruda from 'eruda';
 import { ReactNode } from 'react';
 
 const queryClient = new QueryClient();
 
-// init();
+init();
+
+eruda.init();
 
 export const GlobalProvider = ({ children }: { children: Readonly<ReactNode> }) => {
   return (
