@@ -21,7 +21,9 @@ type NewTask = {
 };
 
 export default function EditingTaskPage() {
-  const { initData } = useLaunchParams(); // Используется только в браузере
+  if (typeof window === 'undefined') return;
+
+  const { initData } = useLaunchParams();
   const [createTask, setCreateTask] = useState<NewTask>({
     title: '',
     description: '',

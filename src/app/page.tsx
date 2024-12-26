@@ -5,6 +5,8 @@ import { Button } from '@nextui-org/button';
 import Link from 'next/link';
 
 export default function Home() {
+  if (typeof window === 'undefined') return;
+
   return (
     <div className='relative h-full w-full px-5 pt-14'>
       <Header />

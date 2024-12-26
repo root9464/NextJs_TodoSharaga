@@ -37,10 +37,8 @@ export const Header = () => {
     },
 
     select: (data) => data,
-    enabled: !!(initData && initData.user),
+    enabled: initData && !!initData.user,
   });
-
-  console.log(data);
 
   return (
     <div className='flex h-fit w-full flex-row items-center justify-between'>

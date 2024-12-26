@@ -13,6 +13,8 @@ type ApiResponse = {
   };
 };
 export const Progress = () => {
+  if (typeof window === 'undefined') return null;
+
   const { initData } = useLaunchParams();
 
   const {

@@ -1,3 +1,4 @@
+'use client';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { isTMA, LaunchParams, mockTelegramEnv, parseInitData, retrieveLaunchParams } from '@telegram-apps/sdk-react';
 
@@ -7,6 +8,11 @@ import { isTMA, LaunchParams, mockTelegramEnv, parseInitData, retrieveLaunchPara
 // see it in your final bundle.
 if (process.env.NODE_ENV === 'development') {
   await (async () => {
+    if (typeof window === 'undefined') {
+      console.warn('⚠️ Skipping Telegram environment mocking in SSR mode.');
+      return;
+    }
+
     if (await isTMA()) {
       return;
     }

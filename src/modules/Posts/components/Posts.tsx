@@ -42,6 +42,8 @@ export type ApiResponseTask = {
 };
 
 export const Posts = () => {
+  if (typeof window === 'undefined') return null;
+
   const { initData } = useLaunchParams();
 
   const {
