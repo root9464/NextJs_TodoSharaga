@@ -1,3 +1,4 @@
+'use client';
 import { Header } from '@/components/Header';
 import { PostsFlow } from '@/modules/Posts/Module';
 import { Button } from '@nextui-org/button';

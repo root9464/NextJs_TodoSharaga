@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id        BigInt  @id @unique
+  id        String  @id @unique
   name      String  @unique
   fisrtName String?
   lastName  String?
@@ -35,6 +35,6 @@ model Task {
   done        Boolean  @default(false)
   priority    Priority
   createdAt   DateTime @default(now())
-  userId      BigInt
+  userId      String
   user        User     @relation(fields: [userId], references: [id])
 }

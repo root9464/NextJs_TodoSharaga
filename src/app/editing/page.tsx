@@ -1,4 +1,5 @@
 'use client';
+
 import { ApiResponseTask } from '@/modules/Posts/components/Posts';
 import { Button } from '@nextui-org/button';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -20,7 +21,7 @@ type NewTask = {
 };
 
 export default function EditingTaskPage() {
-  const { initData } = useLaunchParams();
+  const { initData } = useLaunchParams(); // Используется только в браузере
   const [createTask, setCreateTask] = useState<NewTask>({
     title: '',
     description: '',
@@ -42,7 +43,6 @@ export default function EditingTaskPage() {
 
       return data.data;
     },
-
     onSuccess: (data) => {
       console.log('Create task', data);
       queryClient.invalidateQueries({ queryKey: ['userPosts'] });
@@ -69,12 +69,12 @@ export default function EditingTaskPage() {
 
       <div className='mt-5 grid h-fit w-full grid-rows-2'>
         <p className='text-2xl font-semibold'>Priority</p>
-
         <div className='flex h-full w-full flex-row gap-2'>
           {priorities.map(({ label, color }) => (
             <Button
               key={label}
-              className={`w-full bg-[${color}] font-semibold`}
+              style={{ backgroundColor: color }}
+              className='w-full font-semibold'
               onPress={() => setCreateTask({ ...createTask, proiority: label })}
             >
               {label}
@@ -91,7 +91,7 @@ export default function EditingTaskPage() {
           Create Task
         </Button>
         <Button as={Link} href='/' className='h-[50px] w-full rounded-lg bg-[#4f4f4f]/80 font-semibold text-white'>
-          Cancle
+          Cancel
         </Button>
       </div>
     </div>

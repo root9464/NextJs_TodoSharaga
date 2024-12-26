@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { retrieveLaunchParams } from '@telegram-apps/bridge';
+import { useLaunchParams } from '@telegram-apps/sdk-react';
 import axios from 'axios';
 
 type User = {
@@ -17,7 +17,7 @@ type User = {
 };
 
 export const Header = () => {
-  const { initData } = retrieveLaunchParams();
+  const { initData } = useLaunchParams();
 
   const { data } = useQuery({
     queryKey: ['user'],
@@ -25,7 +25,7 @@ export const Header = () => {
       if (!initData || !initData.user) return;
 
       const { data, status, statusText } = await axios.post<User>('/api/user', {
-        id: initData.user.id,
+        id: initData.user.id.toString(),
         userName: initData.user.username,
         firstName: initData.user.firstName,
         lastName: initData.user.lastName,
@@ -43,12 +43,12 @@ export const Header = () => {
   console.log(data);
 
   return (
-    <div className='w-full h-fit flex flex-row justify-between items-center'>
-      <div className='w-[230px] h-fit flex flex-col'>
-        <h1 className='font-bold text-xl'>You have got 5 tasks today to complete</h1>
+    <div className='flex h-fit w-full flex-row items-center justify-between'>
+      <div className='flex h-fit w-[230px] flex-col'>
+        <h1 className='text-xl font-bold'>You have got 5 tasks today to complete</h1>
         <p className='text-[11px] font-semibold'>- You can only create 10 tasks per day</p>
       </div>
-      {initData && data && initData.user && <img className='w-12 h-12 bg-lime-400 rounded-full' src={initData.user.photoUrl} />}
+      {initData && data && initData.user && <img className='h-12 w-12 rounded-full bg-lime-400' src={initData.user.photoUrl} />}
     </div>
   );
 };
