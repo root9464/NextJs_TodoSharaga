@@ -37,7 +37,7 @@ export default function EditingTaskPage() {
       if (!initData || !initData.user) throw new Error('User in tma not found');
 
       const { data, status, statusText } = await axios.post<ApiResponseTask>('/api/posts', {
-        userId: initData.user.id,
+        userId: initData.user.id.toString(),
         ...newTask,
       });
 
